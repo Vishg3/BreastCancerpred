@@ -21,6 +21,13 @@ def predict_api():
     output_as_python_int = output[0].item() 
     return jsonify(output_as_python_int)
 
+@app.route('/predict',methods=['POST'])
+def predict():
+    data=[float(x) for x in request.form.values()]
+    final_input=np.array(data).reshape(1, -1)
+    print(final_input)
+    output=regmodel.predict(final_input)[0]
+    return render_template('home.html',prediction_text=f'The predicted diagnosis is {output}')
 
 if __name__=='__main__':
     app.run(debug=True)
